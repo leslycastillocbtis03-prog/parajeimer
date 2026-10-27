@@ -1,0 +1,334 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #7288d1, #0e235f, #080d20);
+    color: #e8edff;
+    font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
+}
+
+/* CORAZONES FLOTANTES */
+
+.corazones span {
+    position: fixed;
+    bottom: -50px;
+    color: #668dd8;
+    opacity: 0.35;
+    font-size: 25px;
+    animation: flotar 12s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.corazones span:nth-child(1) {
+    left: 8%;
+    animation-delay: 0s;
+}
+
+.corazones span:nth-child(2) {
+    left: 22%;
+    animation-delay: 3s;
+    font-size: 18px;
+}
+
+.corazones span:nth-child(3) {
+    left: 38%;
+    animation-delay: 6s;
+}
+
+.corazones span:nth-child(4) {
+    left: 52%;
+    animation-delay: 1s;
+    font-size: 30px;
+}
+
+.corazones span:nth-child(5) {
+    left: 67%;
+    animation-delay: 4s;
+}
+
+.corazones span:nth-child(6) {
+    left: 79%;
+    animation-delay: 7s;
+    font-size: 20px;
+}
+
+.corazones span:nth-child(7) {
+    left: 90%;
+    animation-delay: 2s;
+}
+
+.corazones span:nth-child(8) {
+    left: 45%;
+    animation-delay: 9s;
+}
+
+@keyframes flotar {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.4;
+    }
+
+    85% {
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+.contenedor {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 950px;
+    margin: auto;
+    padding: 50px 0;
+}
+
+/* ENCABEZADO */
+
+.presentacion {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.subtitulo {
+    color: #829fdc;
+    font-family: sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+}
+
+.presentacion h1 {
+    color: #c3d5ff;
+    font-size: clamp(27px, 5vw, 42px);
+    text-shadow: 0 0 18px #5279c8;
+    margin-bottom: 15px;
+}
+
+.aniversario {
+    color: #a8bff1;
+    font-size: 19px;
+    margin-bottom: 15px;
+}
+
+.descripcion {
+    color: #b4bfdc;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* LISTA DE CANCIONES */
+
+.playlist {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.cancion {
+    display: flex;
+    align-items: stretch;
+    gap: 25px;
+    padding: 20px;
+    background: rgba(14, 24, 51, 0.88);
+    border: 1px solid #293e69;
+    border-radius: 12px;
+    box-shadow: 0 0 18px rgba(43, 76, 143, 0.15);
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.cancion:hover {
+    transform: translateY(-4px);
+    border-color: #789ee9;
+}
+
+/* IMAGEN */
+
+.portada {
+    width: 185px;
+    min-width: 185px;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #354b79;
+}
+
+.portada img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+
+.cancion:hover .portada img {
+    transform: scale(1.04);
+}
+
+/* INFORMACIÓN */
+
+.informacion {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 5px 0;
+}
+
+.numero {
+    color: #7899df;
+    font-family: sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.informacion h2 {
+    color: #e0e8ff;
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.artista {
+    color: #9cafd8;
+    font-family: sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* FRAGMENTO DEDICADO */
+
+.dedicatoria {
+    width: 100%;
+    padding: 13px 15px;
+    margin-bottom: 20px;
+    background: rgba(68, 94, 151, 0.12);
+    border-left: 3px solid #789ee9;
+    border-radius: 0 7px 7px 0;
+}
+
+.dedicatoria span {
+    display: block;
+    color: #8eafeF;
+    font-family: sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.dedicatoria p {
+    color: #d0d9f2;
+    font-size: 14px;
+    line-height: 1.7;
+    font-style: italic;
+}
+
+/* BOTÓN DE YOUTUBE */
+
+.boton-musica {
+    display: inline-block;
+    padding: 11px 18px;
+    color: #e8efff;
+    background: #263e70;
+    border: 1px solid #668bd4;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 13px;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.boton-musica:hover {
+    background: #3c5c9b;
+    box-shadow: 0 0 15px rgba(104, 150, 235, 0.3);
+}
+
+/* PIE DE PÁGINA */
+
+.final {
+    text-align: center;
+    margin-top: 50px;
+    color: #9cb7f1;
+    letter-spacing: 2px;
+    font-size: 13px;
+    line-height: 2;
+}
+
+.final-texto {
+    color: #aebbd9;
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
+.volver {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 0;
+    color: #a9c5ff;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+.volver:hover {
+    color: white;
+}
+
+/* CELULARES */
+
+@media (max-width: 600px) {
+    .contenedor {
+        width: 92%;
+        padding: 35px 0;
+    }
+
+    .cancion {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 17px;
+    }
+
+    .portada {
+        width: 100%;
+        max-width: 250px;
+        min-width: 0;
+        height: 240px;
+    }
+
+    .portada img {
+        min-height: 0;
+    }
+
+    .informacion {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .dedicatoria {
+        text-align: left;
+    }
+
+    .informacion h2 {
+        font-size: 23px;
+    }
+}

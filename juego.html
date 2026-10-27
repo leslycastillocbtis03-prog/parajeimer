@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090916">
+  <title>Hasta encontrarte</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #090916;
+      --panel: #121326;
+      --violet: #9a7be8;
+      --violet-light: #d2c1ff;
+      --silver: #c8cde6;
+      --pink: #f2bfd8;
+      --muted: #9797b5;
+      --line: #393652;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0; min-height: 100vh;
+      background: var(--night); color: #f0efff;
+      font-family: "Courier New", monospace;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #app {
+      width: min(100%, 1120px); min-height: 100vh;
+      margin: 0 auto; padding: 12px 18px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+
+    .brand {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 8px 12px; color: var(--silver);
+      font-size: 12px; letter-spacing: 3px; text-align: center; margin-bottom: 20px;
+    }
+
+    .screen {
+      display: none; width: 100%; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+    }
+
+    .screen.active { display: flex; }
+
+    h1 {
+      font-size: clamp(36px, 8vw, 72px); line-height: 0.95;
+      margin: 10px 0 20px; text-shadow: 4px 4px 0 #29203f; color: #fff;
+    }
+    h1 span { color: var(--violet-light); }
+
+    .eyebrow { color: var(--pink); font-size: 10px; letter-spacing: 3px; margin-bottom: 10px; }
+    .intro { max-width: 500px; color: var(--muted); font-size: 13px; line-height: 1.8; margin-bottom: 25px; }
+
+    .primary, .secondary {
+      min-height: 46px; padding: 12px 24px; border: 1px solid var(--violet);
+      margin: 6px; font-size: 11px; letter-spacing: 1px; cursor: pointer;
+      font-family: inherit; color: inherit;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #49366f, #302b55);
+      box-shadow: 0 0 22px #765bd525;
+    }
+    .primary:hover { background: linear-gradient(135deg, #604a91, #43346c); }
+
+    .secondary { background: #101020; border-color: var(--line); color: var(--silver); }
+
+    /* Estilos del Canvas */
+    #gameFrame {
+      position: relative; width: 100%; max-width: 960px;
+      border: 2px solid #51456e; background: #090b1d;
+    }
+
+    #gameCanvas {
+      display: block; width: 100%; height: auto;
+      aspect-ratio: 16 / 9; image-rendering: pixelated;
+    }
+
+    .hud {
+      width: 100%; max-width: 960px; display: grid;
+      grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px;
+    }
+
+    .hud-block {
+      padding: 8px; background: #19182f; border: 1px solid #302d49; font-size: 10px;
+    }
+
+    .hud-label { display: block; color: var(--muted); font-size: 8px; margin-bottom: 4px; }
+
+    /* Controles Táctiles */
+    .touch-controls {
+      display: flex; width: 100%; max-width: 960px;
+      justify-content: space-between; margin-top: 15px;
+    }
+    .touch-btn {
+      width: 50px; height: 50px; border: 1px solid #6a5c94;
+      background: #25213f; color: #fff; font-size: 20px;
+      border-radius: 10px; cursor: pointer; touch-action: manipulation;
+    }
+
+    .hidden { display: none !important; }
+
+    .letter {
+      width: min(100%, 600px); padding: 25px; border: 1px solid #8272ac;
+      background: #151426; text-align: left; line-height: 1.8; margin: 20px 0;
+      font-family: Georgia, serif; font-size: 14px; color: #d9d5ea;
+    }
+  </style>
+</head>
+<body>
+
+  <main id="app">
+    <header class="brand">
+      <span style="color:var(--violet-light); font-size:20px;">☾</span>
+      <span>HASTA ENCONTRARTE</span>
+    </header>
+
+    <!-- MENÚ PRINCIPAL -->
+    <section id="menu" class="screen active">
+      <div style="font-size: 60px; color: var(--violet-light);">☾</div>
+      <p class="eyebrow">UN REGALO ESPECIAL</p>
+      <h1>Hasta<br><span>encontrarte</span></h1>
+      <p class="intro">
+        Tres meses. Dos corazones en la distancia.<br>
+        Una aventura que ninguna oscuridad podrá detener.
+      </p>
+      <button id="startBtn" class="primary">COMENZAR AVENTURA ✦</button>
+    </section>
+
+    <!-- PANTALLA DEL JUEGO -->
+    <section id="gameScreen" class="screen">
+      <div id="gameFrame">
+        <canvas id="gameCanvas" width="960" height="540"></canvas>
+      </div>
+
+      <div class="hud">
+        <div class="hud-block"><span class="hud-label">VIDA</span><span id="hearts">♥ ♥ ♥ ♥ ♥</span></div>
+        <div class="hud-block"><span class="hud-label">RECUERDOS</span><span id="memoryCount">0 / 9</span></div>
+        <div class="hud-block"><span class="hud-label">SELLOS</span><span id="sealCount">0 / 3</span></div>
+        <div class="hud-block"><span class="hud-label">ESTADO</span><span id="skillState">⚔ ESPADA</span></div>
+      </div>
+
+      <div class="touch-controls">
+        <div>
+          <button class="touch-btn" id="btnLeft">◀</button>
+          <button class="touch-btn" id="btnRight">▶</button>
+        </div>
+        <div>
+          <button class="touch-btn" id="btnJump">↑</button>
+          <button class="touch-btn" id="btnAttack">⚔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA FINAL -->
+    <section id="endingScreen" class="screen">
+      <div style="font-size: 50px; color: var(--violet-light);">☾</div>
+      <h2>¡Felicidades!</h2>
+      <div class="letter">
+        <h3 style="text-align:center; color: var(--violet-light);">Para mi persona favorita ❤️</h3>
+        <p>
+          Hace tres meses comenzó algo hermoso que hoy ocupa un lugar muy grande en mi corazón.
+          A pesar de la distancia, cada conversación contigo me alegra el día.
+        </p>
+        <p>
+          Gracias por estos tres meses increíbles, por formar parte de mi vida y por ser el mejor compañero de aventuras.
+        </p>
+        <p style="text-align:center; color: var(--pink); margin-top:20px;">
+          ¡Te amo muchísimo! ♡
+        </p>
+      </div>
+      <button onclick="location.reload()" class="primary">VOLVER AL INICIO ↻</button>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let state = "menu";
+    let player = { x: 50, y: 350, w: 32, h: 48, vx: 0, vy: 0, grounded: false, hp: 5 };
+    let keys = {};
+    let memories = 0;
+
+    // Iniciar Juego
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("menu").classList.remove("active");
+      document.getElementById("gameScreen").classList.add("active");
+      state = "playing";
+      gameLoop();
+    });
+
+    // Eventos Teclado
+    window.addEventListener("keydown", e => keys[e.code] = true);
+    window.addEventListener("keyup", e => keys[e.code] = false);
+
+    // Eventos Botones Pantalla
+    const setupTouch = (id, key) => {
+      const btn = document.getElementById(id);
+      btn.addEventListener("touchstart", (e) => { e.preventDefault(); keys[key] = true; });
+      btn.addEventListener("touchend", (e) => { e.preventDefault(); keys[key] = false; });
+      btn.addEventListener("mousedown", () => keys[key] = true);
+      btn.addEventListener("mouseup", () => keys[key] = false);
+    };
+
+    setupTouch("btnLeft", "ArrowLeft");
+    setupTouch("btnRight", "ArrowRight");
+    setupTouch("btnJump", "ArrowUp");
+
+    function update() {
+      if (state !== "playing") return;
+
+      // Movimiento
+      if (keys["ArrowLeft"] || keys["KeyA"]) player.vx = -4;
+      else if (keys["ArrowRight"] || keys["KeyD"]) player.vx = 4;
+      else player.vx *= 0.8;
+
+      if ((keys["ArrowUp"] || keys["Space"] || keys["KeyW"]) && player.grounded) {
+        player.vy = -12;
+        player.grounded = false;
+      }
+
+      // Gravedad
+      player.vy += 0.6;
+      player.x += player.vx;
+      player.y += player.vy;
+
+      // Suelo
+      if (player.y >= 380) {
+        player.y = 380;
+        player.vy = 0;
+        player.grounded = true;
+      }
+
+      // Límite de pantalla y Victoria
+      if (player.x < 0) player.x = 0;
+      if (player.x > 880) {
+        state = "ending";
+        document.getElementById("gameScreen").classList.remove("active");
+        document.getElementById("endingScreen").classList.add("active");
+      }
+    }
+
+    function draw() {
+      // Fondo
+      ctx.fillStyle = "#11172a";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Luna
+      ctx.fillStyle = "#d2c1ff";
+      ctx.beginPath();
+      ctx.arc(800, 100, 40, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Suelo
+      ctx.fillStyle = "#273d36";
+      ctx.fillRect(0, 428, canvas.width, 112);
+
+      // Jugador
+      ctx.fillStyle = "#ff4b72";
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+
+      // Meta / Portal
+      ctx.fillStyle = "#9a7be8";
+      ctx.fillRect(900, 320, 20, 110);
+    }
+
+    function gameLoop() {
+      if (state === "playing") {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+      }
+    }
+  </script>
+</body>
+</html>

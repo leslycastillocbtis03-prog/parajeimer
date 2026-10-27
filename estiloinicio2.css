@@ -1,0 +1,174 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(160deg, #070b18, #111c35, #080d1b);
+    color: #e1e7f4;
+}
+
+.menu-regalos {
+    min-height: 100vh;
+    padding: 35px 20px 220px;
+    text-align: center;
+}
+
+.titulo {
+    color: #c3d1ed;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: normal;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 18px #506a9b;
+}
+
+.instruccion {
+    color: #a8b7d4;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+.regalos {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.regalo {
+    min-height: 170px;
+    padding: 20px 12px;
+    background: linear-gradient(145deg, #172440, #0d1528);
+    border: 1px solid #465b80;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px #040711;
+    color: #dce5f8;
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    transition: transform 0.3s, border-color 0.3s, background 0.3s;
+}
+
+/* El tercer regalo queda centrado abajo */
+.regalo:last-child {
+    grid-column: 1 / 3;
+    justify-self: center;
+    width: 50%;
+}
+
+.regalo:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(145deg, #223557, #111d34);
+    border-color: #9aafd7;
+}
+
+.icono {
+    font-size: 35px;
+}
+
+.nombre-regalo {
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #dbe5fa;
+}
+
+.descripcion {
+    font-size: 13px;
+    color: #a8b7d4;
+    line-height: 1.6;
+}
+
+/* Personaje en la esquina inferior izquierda */
+
+.personaje-conversacion {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 10px;
+    z-index: 10;
+    transition: opacity 0.5s;
+}
+
+.personaje {
+    width: 150px;
+    max-height: 210px;
+    object-fit: contain;
+    animation: flotar 2s ease-in-out infinite;
+    order: 1;
+}
+
+.globo {
+    order: 2;
+    width: 260px;
+    margin-bottom: 95px;
+    padding: 15px;
+    color: #dce5f8;
+    background: #111a2e;
+    border: 1px solid #536b96;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px #040711;
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: left;
+}
+
+.oculto {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes flotar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Ajustes para celular */
+
+@media (max-width: 600px) {
+    .regalos {
+        gap: 12px;
+    }
+
+    .regalo {
+        min-height: 135px;
+        padding: 12px 8px;
+    }
+
+    .regalo:last-child {
+        width: 65%;
+    }
+
+    .personaje {
+        width: 95px;
+        max-height: 130px;
+    }
+
+    .globo {
+        width: calc(100vw - 115px);
+        margin-bottom: 65px;
+        padding: 9px;
+        font-size: 10px;
+    }
+}
